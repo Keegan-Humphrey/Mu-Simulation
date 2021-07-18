@@ -55,7 +55,6 @@ public:
   void BuildForMaster() const;
   void Build() const;
   static bool Debug;
-  static bool Five;
 };
 //----------------------------------------------------------------------------------------------
 
@@ -67,7 +66,6 @@ public:
   void EndOfEventAction(const G4Event* event);
   static const G4Event* GetEvent();
   static size_t EventID();
-  G4bool FiveBodyDecay;
 };
 //----------------------------------------------------------------------------------------------
 
