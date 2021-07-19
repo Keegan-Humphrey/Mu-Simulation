@@ -21,17 +21,19 @@ After building, the executable, `simulation`, is moved into the root directory o
 
 The simulation executable itself comes with several configuration parameters:
 
-| Action                | Short Options    | Long Options        |
-|:---------------------:|:----------------:|:-------------------:|
-| Event Count           | `-e <count>`     | `--events=<count>`  |
-| Particle Generator    | `-g <generator>` | `--gen=<generator>` |
-| Detector              | `-d <detector>`  | `--det=<detector>`  |
-| Custom Script         | `-s <file>`      | `--script=<file>`   |
-| Data Output Directory | `-o <dir>`       | `--out=<dir>`       |
-| Number of Threads     | `-j <count>`     | `--threads=<count>` |
-| Visualization         | `-v`             | `--vis`             |
-| Quiet Mode            | `-q`             | `--quiet`           |
-| Help                  | `-h`             | `--help`            |
+| Action                 | Short Options    | Long Options        |
+|:----------------------:|:----------------:|:-------------------:|
+| Event Count            | `-e <count>`     | `--events=<count>`  |
+| Particle Generator     | `-g <generator>` | `--gen=<generator>` |
+| Detector               | `-d <detector>`  | `--det=<detector>`  |
+| Custom Script          | `-s <file>`      | `--script=<file>`   |
+| Data Output Directory  | `-o <dir>`       | `--out=<dir>`       |
+| Number of Threads      | `-j <count>`     | `--threads=<count>` |
+| Visualization          | `-v`             | `--vis`             |
+| Quiet Mode             | `-q`             | `--quiet`           |
+| Help                   | `-h`             | `--help`            |
+| Five-Body Muon Decay   | `-f`             | ``                  |
+| Non-Random Muon Decay  | `-n`             | ``                  |
 
 Arguments can also be passed through the simulation to a script. Adding key value pairs which correspond to aliased arguments in a script, will be forwarded through. Here's an example:
 
