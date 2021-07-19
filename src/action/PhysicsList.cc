@@ -83,8 +83,7 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList(),fData()
     }
 
     RegisterPhysics(new G4StepLimiterPhysics());
-fData = new MuonDataController();
-fData->setRandom(true);
+fData = MuonDataController::getMuonDataController();
 
 
 }

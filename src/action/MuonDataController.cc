@@ -96,6 +96,7 @@ void MuonDataController::getParticles(G4int timesRun, G4double* dataArray){
         dataArray[6] = p3x[timesRun];
         dataArray[7] = p3y[timesRun];
         dataArray[8] = p3z[timesRun];
+G4cout<<"Times run :"<<timesRun<<G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -168,8 +169,20 @@ return DecayInEvent;
 
 }
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void MuonDataController::setOn(G4bool value){
+decaysOn = value;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+G4bool MuonDataController::getOn(){
+
+return decaysOn;
+
+}
+
 
 }}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

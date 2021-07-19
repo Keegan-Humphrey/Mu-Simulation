@@ -17,6 +17,7 @@
 
 #include "tracking.hh"
 
+#include "MuonDataController.hh"
 #include <iomanip>
 
 #include <G4SDManager.hh>

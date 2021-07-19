@@ -27,12 +27,15 @@ public:
     virtual G4bool getRandom();
     virtual G4int getMuonDecays();
     virtual void setRandom(G4bool);
-    virtual void setMuonDecays(G4int);        
+    virtual void setMuonDecays(G4int);
+    virtual void setOn(G4bool);
+    virtual G4bool getOn();        
 private:
    EventAction* eventAction;
    static MuonDataController* sController;
    G4int i =0;
    G4bool Random;
+   G4bool decaysOn;
    G4int MuonDecays =0;
    G4String e1x, e1y, e1z, e2x, e2y, e2z, e3x, e3y, e3z;
    G4bool DecayInEvent;

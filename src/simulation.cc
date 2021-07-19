@@ -114,17 +114,16 @@ auto run = new G4MTRunManager();
   if (shift_opt.argument)
     Earth::LastShift(std::stold(shift_opt.argument) * m);
 
-//G4bool fiveBodyMuonDecays = five_body_muon_decay_opt.count;
 G4bool fiveBodyMuonDecays = five_body_muon_decay_opt.count;
 G4bool randomize = !(non_random_muon_decay_opt.count);
 
-G4cout<<"fiveBodyMuonDecays "<<fiveBodyMuonDecays<<" randomize "<<randomize<<G4endl;
+MuonDataController* controller = new MuonDataController();
+controller->setRandom(randomize);
+controller->setOn(fiveBodyMuonDecays);
 
 if(fiveBodyMuonDecays){
 auto physics = new PhysicsList();
 run->SetUserInitialization(physics);
-MuonDataController* controller = MuonDataController::getMuonDataController();
-controller->setRandom(randomize);
 
 }else{
   auto physics = new FTFP_BERT;

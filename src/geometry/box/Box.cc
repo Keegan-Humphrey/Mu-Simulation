@@ -3,6 +3,7 @@
 #include <G4SubtractionSolid.hh>
 #include <tls.hh>
 
+#include "MuonDataController.hh"
 #include "action.hh"
 #include "analysis.hh"
 #include "geometry/Earth.hh"
@@ -423,9 +424,16 @@ G4bool Detector::ProcessHits(G4Step* step, G4TouchableHistory*) {
 
 //__Post-Event Processing_______________________________________________________________________
 void Detector::EndOfEvent(G4HCofThisEvent*) {
+  
   if (_hit_collection->GetSize() == 0)
     return;
-
+MuonDataController* controller = MuonDataController::getMuonDataController();
+  if(controller->getOn() ==true){
+    if(controller->getDecayInEvent() == false){
+      return;
+      }
+    }
+ 
   const auto collection_data = Tracking::ConvertToAnalysis(_hit_collection);
 
   Analysis::ROOT::DataEntryList root_data;
@@ -458,6 +466,7 @@ void Detector::EndOfEvent(G4HCofThisEvent*) {
   Analysis::ROOT::FillNTuple(DataName, Detector::DataKeyTypes, metadata, root_data);
   if (verboseLevel >= 2 && _hit_collection)
     std::cout << *_hit_collection;
+  controller->setDecayInEvent(false);
 }
 //----------------------------------------------------------------------------------------------
 
