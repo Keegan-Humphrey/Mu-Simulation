@@ -74,6 +74,8 @@ GeneratorAction::GeneratorAction(const std::string& generator)
 
   _gen_map["corsika_reader"] = new Physics::CORSIKAReaderGenerator("");
 
+  _gen_map["parma"] = new Physics::ParmaGenerator();
+
   std::string generators;
   for (const auto& element : _gen_map) {
     generators.append(element.first);

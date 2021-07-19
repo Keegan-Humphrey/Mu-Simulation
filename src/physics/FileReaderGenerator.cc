@@ -27,12 +27,14 @@ FileReaderGenerator::FileReaderGenerator(const std::string &name,
 }
 
 void FileReaderGenerator::GeneratePrimaryVertex(G4Event *event) {
+  _last_event.clear();
   std::size_t particle_parameters_index = _particle_parameters.size();
   {
     G4AutoLock lock(mutex);
     particle_parameters_index = _event_counter;
     ++_event_counter;
   }
+  _last_event.push_back(_particle_parameters.at(particle_parameters_index));
   AddParticle(_particle_parameters.at(particle_parameters_index), *event);
 }
 
@@ -71,6 +73,11 @@ void FileReaderGenerator::SetNewValue(G4UIcommand *command, G4String value) {
     Generator::SetNewValue(command, value);
   }
 }
+//__Get Last Event Data_________________________________________________________________________
+GenParticleVector FileReaderGenerator::GetLastEvent() const {
+  return _last_event;
+}
+//----------------------------------------------------------------------------------------------
 
 std::ostream &FileReaderGenerator::Print(std::ostream &os) const {
   os << "Generator Info:\n  "

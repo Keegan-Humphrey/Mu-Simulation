@@ -1,0 +1,6 @@
+/det/select Box
+
+/gen/select file_reader
+/gen/file_reader/pathname /cms/sve6/MATHUSLA/Simulation/Mu-Simulation/src/physics/testOutSim.txt
+
+/run/beamOn 1000

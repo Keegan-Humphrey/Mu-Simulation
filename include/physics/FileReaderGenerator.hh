@@ -21,8 +21,12 @@ public:
 
   virtual void GeneratePrimaryVertex(G4Event *event);
   virtual void SetNewValue(G4UIcommand *command, G4String value);
+  virtual GenParticleVector GetLastEvent() const;
   virtual std::ostream &Print(std::ostream &os = std::cout) const;
   virtual const Analysis::SimSettingList GetSpecification() const;
+
+private:
+  GenParticleVector _last_event;
 
 protected:
   virtual void GenerateCommands();
