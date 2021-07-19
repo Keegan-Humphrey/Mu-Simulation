@@ -645,7 +645,7 @@ namespace CMS{
 
 	auto modified = new G4SubtractionSolid("",
 										   earth_box,
-										   Construction::Box("AirBox", x_edge_length + 2.0L*cm + x_edge_increase, y_edge_length + 2.0L*cm, air_gap),
+										   Construction::Box("AirBox", x_edge_length + x_edge_increase, y_edge_length + 2.0L*cm, air_gap),
 										   Construction::Transform(x_displacement,
 																   0.5L*y_edge_length + y_displacement,
 																   0.5L*(air_gap-Earth::TotalDepth()) -9.50*m ));
@@ -795,7 +795,7 @@ G4VPhysicalVolume* Detector::ConstructEarth(G4LogicalVolume* world){
 
 	auto modified = Construction::Volume(new G4SubtractionSolid("ModifiedSandstone",
 																sandstone->GetSolid(),
-																Construction::Box("AirBox3", x_edge_length + 2.0L*cm + x_edge_increase, y_edge_length + 2.0L*cm, air_gap),
+																Construction::Box("AirBox3", x_edge_length + x_edge_increase, y_edge_length + 2.0L*cm, air_gap),
 																Construction::Transform(x_displacement,
 																0.5L*y_edge_length + y_displacement,
 															    0.5L*(air_gap-Earth::SandstoneDepth()) - 9.50*m)),
