@@ -27,11 +27,13 @@ The simulation executable itself comes with several configuration parameters:
 | Custom Script         | `-s <file>`      | `--script=<file>`   |
 | Data Output Directory | `-o <dir>`       | `--out=<dir>`       |
 | Number of Threads     | `-j <count>`     | `--threads=<count>` |
-| Visualization             | `-v`             | `--vis`             |
-| Quiet Mode                | `-q`             | `--quiet`           |
-| Help                      | `-h`             | `--help`            |
-| Save All Generator Events | `NA`             | `--save_all`        |
-| Save Events With Pseudo-Digi Cuts | `NA`             | `--save_cut`|
+| Visualization         | `-v`             | `--vis`             |
+| Quiet Mode            | `-q`             | `--quiet`           |
+| Help                  | `-h`             | `--help`            |
+| Save All Generator Events         | `NA` | `--save_all`        |
+| Save Events With Pseudo-Digi Cuts | `NA` | `--save_cut`        |
+| Turn On Five Body Muon Decays     | `-f` | `--five_muon`       |
+| Non-Random Five Body Decays       | `-n` | `--non_random`      |
 
 An example script for running muon gun above ground, to emulate cosmic muons, can be found in studies/box/cosmics/muon/
 
