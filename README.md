@@ -30,6 +30,8 @@ The simulation executable itself comes with several configuration parameters:
 | Data Output Directory | `-o <dir>`       | `--out=<dir>`       |
 | Number of Threads     | `-j <count>`     | `--threads=<count>` |
 | Visualization         | `-v`             | `--vis`             |
+| Turn On Five Body Muon Decays     | `-f` | `--five_muon`       |
+| Non-Random Five Body Decays       | `-n` | `--non_random`      |
 | Quiet Mode            | `-q`             | `--quiet`           |
 | Help                  | `-h`             | `--help`            |
 
