@@ -29,6 +29,7 @@
 //
 
 #include "MuonDataController.hh"
+#include "G4SystemOfUnits.hh"
 
 namespace MATHUSLA { namespace MU {
 
@@ -54,23 +55,23 @@ std::fstream eData;
 		{
                         //9 vectors so use 9 get lines {e1x, e1y, e1z, e2x, e2y, e2z, e3x, e3y, e3z}
                         getline(eData, e1x, ',');
-                        p1x.push_back(stod(e1x));
+                        p1x.push_back(stod(e1x)*GeV);
                         getline(eData, e1y, ',');
-                        p1y.push_back(stod(e1y));
+                        p1y.push_back(stod(e1y)*GeV);
                         getline(eData, e1z, ',');
-                        p1z.push_back(stod(e1z));
+                        p1z.push_back(stod(e1z)*GeV);
                         getline(eData, e2x, ',');
-                        p2x.push_back(stod(e2x));
+                        p2x.push_back(stod(e2x)*GeV);
                         getline(eData, e2y, ',');
-                        p2y.push_back(stod(e2y));
+                        p2y.push_back(stod(e2y)*GeV);
                         getline(eData, e2z, ',');
-                        p2z.push_back(stod(e2z));
+                        p2z.push_back(stod(e2z)*GeV);
                         getline(eData, e3x, ',');
-                        p3x.push_back(stod(e3x));
+                        p3x.push_back(stod(e3x)*GeV);
                         getline(eData, e3y, ',');
-                        p3y.push_back(stod(e3y));
+                        p3y.push_back(stod(e3y)*GeV);
                         getline(eData, e3z, '\n'); //new line after z-momentum of the third electron
-			p3z.push_back(stod(e3z));
+			p3z.push_back(stod(e3z)*GeV);
                         i +=1;
                 }
                 eData.close(); //close the file     
