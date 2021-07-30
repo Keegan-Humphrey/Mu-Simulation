@@ -44,7 +44,7 @@ G4Exception("MuonDataController::MuonDataController","MuonDataControler01",Fatal
 sController = this;
 eventAction =0;
 std::fstream eData;
-        eData.open("src/action/muon5body_data.csv",std::fstream::in);
+        eData.open("src/action/muon5body_100k.csv",std::fstream::in);
         //ignore first line
         G4String line;
 	std::getline(eData,line);
