@@ -91,13 +91,13 @@ if(!(controller->getOn())){return;}
    G4double zmax = 170*m;
    G4double xmin = -49.5*m
    G4double xmax = 49.5*m;
-   G4double zmin = 60.03*m;
+   G4double ymin = 60.03*m;
    //this is the bottom of the thrid scintilator from the top of the detector
-   G4double zmaxZone = 87.095*m;
+   G4double ymaxZone = 87.095*m;
    
    if( (xmin<X_Value) && (X_Value<xmax) 
-    && (ymin<Y_Value) && (Y_Value<ymax)
-    && (zmin<Z_Value) && (Z_Value<zmaxZone)){
+    && (ymin<Y_Value) && (Y_Value<ymaxZone)
+    && (zmin<Z_Value) && (Z_Value<zmax)){
     controller->setDecayInZone(true);
     }   
    
