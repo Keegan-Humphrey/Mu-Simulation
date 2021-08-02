@@ -133,6 +133,10 @@ const Analysis::ROOT::DataEntryList ConvertToAnalysis(const G4Event* event);
 const Analysis::ROOT::DataEntryList ConvertToAnalysis(const Physics::GenParticleVector& particles, bool saveall);
 //----------------------------------------------------------------------------------------------
 
+//__Convert HitCollection to Cut Analysis Form______________________________________________________
+const Analysis::ROOT::DataEntryList ConvertToAnalysis(const HitCollection* collection, std::vector<std::vector<double>> layer_bounds, bool savecut);
+//----------------------------------------------------------------------------------------------
+
 //__Convert Extra to Analysis Form______________________________________________________________
 const Analysis::ROOT::DataEntryList ConvertToAnalysis(const std::vector<std::vector<double>>& extra);
 //----------------------------------------------------------------------------------------------

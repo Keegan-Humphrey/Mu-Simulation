@@ -98,7 +98,7 @@ int main(const int argc, const char *const argv[]) {
     std::cout << "Usage: " << argv[0] << " [all]" << std::endl;
     return 1;
   }
-  MATHUSLA::MU::Construction::Builder test_stand_builder("Prototype", "test-stand-geometry-dump", true);
+  MATHUSLA::MU::Construction::Builder test_stand_builder("Prototype", "test-stand-geometry-dump", true, false);
   const auto &world = *(test_stand_builder.Construct());
   std::cout << "# Format by column:" << std::endl << std::endl;
   std::cout << "# Volume name" << std::endl;

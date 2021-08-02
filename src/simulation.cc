@@ -1,19 +1,3 @@
-/* src/simulation.cc
- *
- * Copyright 2018 Brandon Gomes
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 #include <G4MTRunManager.hh>
 #include <FTFP_BERT.hh>
@@ -29,6 +13,8 @@
 #include "ui.hh"
 #include "PhysicsList.hh"
 #include "MuonDataController.hh"
+
+#include "G4GenericBiasingPhysics.hh"
 
 #include "util/command_line_parser.hh"
 #include "util/error.hh"
@@ -49,19 +35,19 @@ int main(int argc, char* argv[]) {
   option script_opt  ('s', "script",   "Custom Script",             option::required_arguments);
   option events_opt  ('e', "events",   "Event Count",               option::required_arguments);
   option save_all_opt(0,   "save_all", "Save All Generator Events", option::no_arguments);
-  option five_body_muon_decay_opt('f',   "five_muon", "Make 3-body muon decay 5-body", option::no_arguments);
-  option non_random_muon_decay_opt('n',   "non_random", "Make 5-body muon decays in order", option::no_arguments);
+  option cut_save_opt(0,   "cut_save", "Save Events With Digi Cuts",option::no_arguments);
+  option bias_opt    (0,   "bias",     "Bias Muon Nuclear Interactions in Earth Volume", option::no_arguments);
+  option five_body_muon_decay_opt('f', "five_muon", "Make 3-body muon decay 5-body",     option::no_arguments);
+  option non_random_muon_decay_opt('n',"non_random", "Make 5-body muon decays in order", option::no_arguments);
   option vis_opt     ('v', "vis",      "Visualization",             option::no_arguments);
   option quiet_opt   ('q', "quiet",    "Quiet Mode",                option::no_arguments);
-  option thread_opt  ('j', "threads",
-    "Multi-Threading Mode: Specify Optional number of threads (default: 2)",
-    option::optional_arguments);
+  option thread_opt  ('j', "threads",  "Multi-Threading Mode: Specify Optional number of threads (default: 2)", option::optional_arguments);
 
   //TODO: pass quiet argument to builder and action initiaization to improve quietness
 
   const auto script_argc = -1 + util::cli::parse(argv,
     {&help_opt, &gen_opt, &det_opt, &shift_opt, &data_opt, &export_opt, &script_opt, &events_opt,
-     &save_all_opt, &vis_opt, &five_body_muon_decay_opt, &non_random_muon_decay_opt, &quiet_opt, &thread_opt});
+     &save_all_opt, &cut_save_opt, &bias_opt, &five_body_muon_decay_opt, &non_random_muon_decay_opt, &vis_opt, &quiet_opt, &thread_opt});
 
 
   util::error::exit_when(script_argc && !script_opt.argument,
@@ -113,27 +99,35 @@ int main(int argc, char* argv[]) {
   if (shift_opt.argument)
     Earth::LastShift(std::stold(shift_opt.argument) * m);
 
-G4bool fiveBodyMuonDecays = five_body_muon_decay_opt.count;
-G4bool randomize = !(non_random_muon_decay_opt.count);
+  G4bool fiveBodyMuonDecays = five_body_muon_decay_opt.count;
+  G4bool randomize = !(non_random_muon_decay_opt.count);
 
-MuonDataController* controller = new MuonDataController();
-controller->setRandom(randomize);
-controller->setOn(fiveBodyMuonDecays);
+  MuonDataController* controller = new MuonDataController();
+  controller->setRandom(randomize);
+  controller->setOn(fiveBodyMuonDecays);
 
-if(fiveBodyMuonDecays){
-auto physics = new PhysicsList();
-run->SetUserInitialization(physics);
+  G4GenericBiasingPhysics* biasingPhysics = new G4GenericBiasingPhysics();
+  biasingPhysics->Bias( "mu+" );
+  biasingPhysics->Bias( "mu-" );
 
-}else{
-  auto physics = new FTFP_BERT;
-  physics->RegisterPhysics(new G4StepLimiterPhysics);
-  run->SetUserInitialization(physics);
-  util::error::exit_when(!randomize,"You have set the flag -n so that the order of five-body muon decays are not random, but you have not set -f to turn on five-body muon decays. \n Turn on five-body muon decays and try again, or do not use the flag -n");
-}
+  if(fiveBodyMuonDecays){
+    auto physics = new PhysicsList();
+    run->SetUserInitialization(physics);
+  } else if (bias_opt.count){
+    auto physics = new FTFP_BERT;
+    physics->RegisterPhysics( biasingPhysics );
+    physics->RegisterPhysics(new G4StepLimiterPhysics);
+    run->SetUserInitialization(physics);
+  } else{
+    auto physics = new FTFP_BERT;
+    physics->RegisterPhysics(new G4StepLimiterPhysics);
+    run->SetUserInitialization(physics);
+    util::error::exit_when(!randomize,"You have set the flag -n so that the order of five-body muon decays are not random, but you have not set -f to turn on five-body muon decays. \n Turn on five-body muon decays and try again, or do not use the flag -n");
+  }
 
   const auto detector = det_opt.argument ? det_opt.argument : "Box";
   const auto export_dir = export_opt.argument ? export_opt.argument : "";
-  run->SetUserInitialization(new Construction::Builder(detector, export_dir, save_all_opt.count));
+  run->SetUserInitialization(new Construction::Builder(detector, export_dir, save_all_opt.count, cut_save_opt.count));
 
   const auto generator = gen_opt.argument ? gen_opt.argument : "basic";
   const auto data_dir = data_opt.argument ? data_opt.argument : "data";

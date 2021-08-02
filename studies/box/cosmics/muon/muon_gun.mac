@@ -1,4 +1,4 @@
-/det/select Box
+/det/select Cosmic
 
 /vis/filtering/trajectories/create/chargeFilter
 /vis/filtering/trajectories/chargeFilter-0/add 0
@@ -10,7 +10,7 @@
 
 /gen/range/id 13
 /gen/range/t0 0 ns
-/gen/range/vertex 120 0 -20 m
+/gen/range/vertex 0 0 -20 m
 /gen/range/p_unit 0 0 -1
 
 /gen/range/phi_min -3.2 rad

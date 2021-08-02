@@ -1,20 +1,3 @@
-/* include/geometry/Construction.hh
- *
- * Copyright 2018 Brandon Gomes
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 #ifndef MU__GEOMETRY_CONSTRUCTION_HH
 #define MU__GEOMETRY_CONSTRUCTION_HH
 #pragma once
@@ -68,7 +51,8 @@ class Builder : public G4VUserDetectorConstruction, public G4UImessenger {
 public:
   Builder(const std::string& detector,
           const std::string& export_dir,
-          const bool save_option);
+          const bool save_option,
+          const bool cut_save_option);
   G4VPhysicalVolume* Construct();
   void ConstructSDandField();
 
@@ -77,7 +61,7 @@ public:
   static const std::string MessengerDirectory;
 
   static void SetDetector(const std::string& detector);
-  static void SetSaveOption(const bool option);
+  static void SetSaveOption(const bool save_option, const bool cut_save_option);
 
   static const std::string& GetDetectorName();
   static bool IsDetectorDataPerEvent();
