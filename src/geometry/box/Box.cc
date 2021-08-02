@@ -433,8 +433,10 @@ void Detector::EndOfEvent(G4HCofThisEvent*) {
       return;
       }
     if(controller->getDecayInZone() == false){
+      G4cout<<"Decay In Zone is false"<<G4endl;
       return;
       }
+     G4cout<<"Decay in zone is true"<<G4endl;
     }
  
   const auto collection_data = Tracking::ConvertToAnalysis(_hit_collection);

@@ -40,6 +40,7 @@ add_library(mu-simulation-lib SHARED
     src/action/PhysicsList.cc
     src/action/FiveBodyMuonDecayChannel.cc
     src/action/MuonDataController.cc
+    src/action/TrackingAction.cc
 
     src/geometry/Cavern.cc
     src/geometry/Construction.cc

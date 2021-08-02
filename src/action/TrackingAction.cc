@@ -32,7 +32,6 @@
 
 #include "action.hh"
 #include "MuonDataController.hh"
-#include "HistoManager.hh"
 #include "G4RunManager.hh"
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
@@ -89,18 +88,20 @@ if(!(controller->getOn())){return;}
    //Definitions for zone in which decay must occur to be saved
    G4double zmin = 70.0*m;
    G4double zmax = 170*m;
-   G4double xmin = -49.5*m
+   G4double xmin = -49.5*m;
    G4double xmax = 49.5*m;
    G4double ymin = 60.03*m;
-   //this is the bottom of the thrid scintilator from the top of the detector
-   G4double ymaxZone = 87.095*m;
-   
+   //this is the bottom of the third scintilator from the top of the detector
+   G4double ymaxZone = 87.095*m;  
+
+ 
    if( (xmin<X_Value) && (X_Value<xmax) 
     && (ymin<Y_Value) && (Y_Value<ymaxZone)
     && (zmin<Z_Value) && (Z_Value<zmax)){
     controller->setDecayInZone(true);
+   G4cout<<"Set decay in zone true"<<G4endl;
     }   
-   
+   G4cout<<"Decay in zone status: "<<controller->getDecayInZone()<<G4endl;
      
 }
 
