@@ -1,19 +1,3 @@
-/* src/geometry/Construction.cc
- *
- * Copyright 2018 Brandon Gomes
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 #include "geometry/Construction.hh"
 
@@ -31,9 +15,12 @@
 #include <tls.hh>
 
 #include "geometry/Box.hh"
+#include "geometry/Cosmic.hh"
 #include "geometry/Prototype.hh"
 #include "geometry/Flat.hh"
 #include "geometry/MuonMapper.hh"
+
+#include "MultiParticleChangeCrossSection.hh"
 
 #include "util/io.hh"
 
@@ -53,10 +40,11 @@ std::string _data_name;
 const Analysis::ROOT::DataKeyList* _data_keys;
 const Analysis::ROOT::DataKeyTypeList* _data_key_types;
 bool _save_option;
+bool _cut_save_option;
 //----------------------------------------------------------------------------------------------
 
 //__Detector List_______________________________________________________________________________
-const std::string& _detectors = "Prototype Flat Box MuonMapper";
+const std::string& _detectors = "Prototype Flat Cosmic Box MuonMapper";
 //----------------------------------------------------------------------------------------------
 
 } /* anonymous namespace */ ////////////////////////////////////////////////////////////////////
@@ -91,11 +79,13 @@ const std::string Builder::MessengerDirectory = "/det/";
 //__Builder Constructor_________________________________________________________________________
 Builder::Builder(const std::string& detector,
                  const std::string& export_dir,
-                 const bool save_option)
+                 const bool save_option,
+                 const bool cut_save_option)
     : G4VUserDetectorConstruction(), G4UImessenger(MessengerDirectory, "Particle Detectors.") {
   _detector = detector;
   _export_dir = export_dir;
   _save_option = save_option;
+  _cut_save_option = cut_save_option;
 
   _select = CreateCommand<Command::StringArg>("select", "Select Detector.");
   _select->SetParameterName("detector", false);
@@ -123,12 +113,18 @@ G4VPhysicalVolume* Builder::Construct() {
   std::cout << "Computed tolerance = "
             << G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() / m << " m\n";
 
+
+  auto CosmicWorldLV = BoxVolume("CosmicWorld", WorldLength, WorldLength, WorldLength - 1552*m);
   auto worldLV = BoxVolume("World", WorldLength, WorldLength, WorldLength - 700*m);
+
 
   if (!_export_dir.empty()) {
     if (_detector == "Flat") {
       Export(Flat::Detector::Construct(worldLV), _export_dir, "flat.gdml");
       Export(Flat::Detector::ConstructEarth(worldLV), _export_dir, "flat.earth.gdml");
+    } else if (_detector == "Cosmic") {
+      Export(Cosmic::Detector::Construct(CosmicWorldLV), _export_dir, "cosmic.gdml");
+      Export(Cosmic::Detector::ConstructEarth(CosmicWorldLV), _export_dir, "cosmic.earth.gdml");
     } else if (_detector == "Box") {
       Export(Box::Detector::Construct(worldLV), _export_dir, "box.gdml");
       Export(Box::Detector::ConstructEarth(worldLV), _export_dir, "box.earth.gdml");
@@ -143,6 +139,9 @@ G4VPhysicalVolume* Builder::Construct() {
     if (_detector == "Flat") {
       Flat::Detector::Construct(worldLV);
       Flat::Detector::ConstructEarth(worldLV);
+    } else if (_detector == "Cosmic") {
+      Cosmic::Detector::Construct(CosmicWorldLV);
+      Cosmic::Detector::ConstructEarth(CosmicWorldLV);
     } else if (_detector == "Box") {
       Box::Detector::Construct(worldLV);
       Box::Detector::ConstructEarth(worldLV);
@@ -155,12 +154,16 @@ G4VPhysicalVolume* Builder::Construct() {
     }
   }
 
-  Builder::SetSaveOption(_save_option);
+  Builder::SetSaveOption(_save_option, _cut_save_option);
 
   auto world = PlaceVolume(worldLV, nullptr);
+  auto cosmic_world = PlaceVolume(CosmicWorldLV, nullptr);
+
   if (!_export_dir.empty()) {
     if (_detector == "Flat") {
       Export(world, _export_dir, "world.flat.gdml");
+    } else if (_detector == "Cosmic") {
+      Export(cosmic_world, _export_dir, "world.cosmic.gdml");
     } else if (_detector == "Box") {
       Export(world, _export_dir, "world.box.gdml");
     } else if (_detector == "MuonMapper") {
@@ -172,13 +175,19 @@ G4VPhysicalVolume* Builder::Construct() {
 
   std::cout << "Materials: "
             << *G4Material::GetMaterialTable() << '\n';
+
   const std::string folder = "detector_geo";
-  const std::string file = "world.gdml";  
+  const std::string file = "world.gdml";
   const std::string arg4 = "http://service-spi.web.cern.ch/service-spi/app/releases/GDML/Schema/gdml.xsd";
 
-  Construction::Export(world, folder, file, arg4);
+  if (_detector == "Cosmic") {
+      Construction::Export(cosmic_world, folder, file, arg4);
+      return cosmic_world;
+  } else {
+      Construction::Export(world, folder, file, arg4);
+      return world;
+  }
 
-  return world;
 }
 //----------------------------------------------------------------------------------------------
 
@@ -190,12 +199,36 @@ void Builder::ConstructSDandField() {
     _data_keys = &Flat::Detector::DataKeys;
     _data_key_types = &Flat::Detector::DataKeyTypes;
     G4SDManager::GetSDMpointer()->AddNewDetector(new Flat::Detector);
+  } else if (_detector == "Cosmic") {
+    _data_per_event = Cosmic::Detector::DataPerEvent;
+    _data_name = Cosmic::Detector::DataName;
+    _data_keys = &Cosmic::Detector::DataKeys;
+    _data_key_types = &Cosmic::Detector::DataKeyTypes;
+    G4SDManager::GetSDMpointer()->AddNewDetector(new Cosmic::Detector);
+
+    G4LogicalVolume* earth_volume = G4LogicalVolumeStore::GetInstance()->GetVolume("ModifiedSandstoneCosmic");
+    MultiParticleChangeCrossSection* biasingOperator = new MultiParticleChangeCrossSection;
+    biasingOperator->AddParticle( "mu+" );
+    biasingOperator->AddParticle( "mu-" );
+    biasingOperator->AttachTo(earth_volume);
+    G4cout << " Attaching biasing operator " << biasingOperator->GetName()
+           << " to logical volume " << earth_volume->GetName()
+           << G4endl;
   } else if (_detector == "Box") {
     _data_per_event = Box::Detector::DataPerEvent;
     _data_name = Box::Detector::DataName;
     _data_keys = &Box::Detector::DataKeys;
     _data_key_types = &Box::Detector::DataKeyTypes;
     G4SDManager::GetSDMpointer()->AddNewDetector(new Box::Detector);
+
+    G4LogicalVolume* earth_volume = G4LogicalVolumeStore::GetInstance()->GetVolume("ModifiedSandstoneCosmic");
+    MultiParticleChangeCrossSection* biasingOperator = new MultiParticleChangeCrossSection;
+    biasingOperator->AddParticle( "mu+" );
+    biasingOperator->AddParticle( "mu-" );
+    biasingOperator->AttachTo(earth_volume);
+    G4cout << " Attaching biasing operator " << biasingOperator->GetName()
+           << " to logical volume " << earth_volume->GetName()
+           << G4endl;
   } else if (_detector == "MuonMapper") {
     _data_per_event = MuonMapper::Detector::DataPerEvent;
     _data_name = MuonMapper::Detector::DataName;
@@ -235,15 +268,18 @@ void Builder::SetDetector(const std::string& detector) {
 //----------------------------------------------------------------------------------------------
 
 //__Set Current Detector Save Option____________________________________________________________
-void Builder::SetSaveOption(bool option) {
+void Builder::SetSaveOption(bool save_option, bool cut_save_option) {
   if (_detector == "Flat") {
-    Flat::Detector::SaveAll = option;
+    Flat::Detector::SaveAll = save_option;
   } else if (_detector == "Box") {
-    Box::Detector::SaveAll = option;
+    Box::Detector::SaveAll = save_option;
+  } else if (_detector == "Cosmic") {
+    Cosmic::Detector::SaveAll = save_option;
+    Cosmic::Detector::SaveCut = cut_save_option;
   } else if (_detector == "MuonMapper") {
-    MuonMapper::Detector::SaveAll = option;
+    MuonMapper::Detector::SaveAll = save_option;
   } else {
-    Prototype::Detector::SaveAll = option;
+    Prototype::Detector::SaveAll = save_option;
   }
 }
 //----------------------------------------------------------------------------------------------

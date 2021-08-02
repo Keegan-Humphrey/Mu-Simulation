@@ -19,6 +19,7 @@
 
 #include <G4MTRunManager.hh>
 #include <tls.hh>
+#include "MuonDataController.hh"
 
 namespace MATHUSLA { namespace MU {
 
@@ -45,7 +46,12 @@ void EventAction::BeginOfEventAction(const G4Event* event) {
              + (!(_event_id % _print_modulo) ? "\n\n" : "");
 
   if (ActionInitialization::Debug) StepDataStore::Initialize(_event_id);
-
+  
+  MuonDataController* Controller = MuonDataController::getMuonDataController();
+  if (Controller->getOn()){
+  Controller->setDecayInEvent(false);
+  Controller->setDecayInZone(false);
+  }
 }
 //----------------------------------------------------------------------------------------------
 
@@ -64,6 +70,13 @@ size_t EventAction::EventID() {
 //__Event Initialization________________________________________________________________________
 void EventAction::EndOfEventAction(const G4Event* event) {
   if (ActionInitialization::Debug) StepAction::WriteTree(event->GetEventID());
+  MuonDataController* controller = MuonDataController::getMuonDataController();
+  if(controller->getOn()){
+    if(controller->getDecayInEvent()){
+    controller->incrementEventsWithDecay(1);
+      }
+    }  
+
 }
 //--
 

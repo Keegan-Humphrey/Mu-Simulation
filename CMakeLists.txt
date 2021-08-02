@@ -31,20 +31,30 @@ include(${Geant4_USE_FILE})
 add_library(mu-simulation-lib SHARED
     src/analysis.cc
     src/tracking.cc
-    
+    src/ChangeCrossSection.cc
+    src/MultiParticleChangeCrossSection.cc
+
     src/action/ActionInitialization.cc
     src/action/EventAction.cc
     src/action/GeneratorAction.cc
     src/action/RunAction.cc
     src/action/StepAction.cc
+    src/action/PhysicsList.cc
+    src/action/FiveBodyMuonDecayChannel.cc
+    src/action/MuonDataController.cc
+    src/action/TrackingAction.cc
 
     src/geometry/Cavern.cc
     src/geometry/Construction.cc
     src/geometry/Earth.cc
+    src/geometry/CosmicEarth.cc
     src/geometry/MuonMapper.cc
 
     src/geometry/box/Box.cc
     src/geometry/box/Scintillator.cc
+
+    src/geometry/cosmic/Cosmic.cc
+    src/geometry/cosmic/Scintillator.cc
 
     src/geometry/flat/Flat.cc
     src/geometry/flat/Layer.cc

@@ -49,6 +49,7 @@ void ActionInitialization::BuildForMaster() const {
 void ActionInitialization::Build() const {
   SetUserAction(new RunAction(_data_dir));
   SetUserAction(new EventAction(100));
+  SetUserAction(new TrackingAction());
   SetUserAction(new GeneratorAction(_generator));
   if (Debug) SetUserAction(new StepAction());
 }

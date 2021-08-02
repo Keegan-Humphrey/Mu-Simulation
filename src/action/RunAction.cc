@@ -36,6 +36,7 @@
 #include "geometry/Construction.hh"
 #include "physics/Units.hh"
 
+#include "MuonDataController.hh"
 #include "util/io.hh"
 #include "util/time.hh"
 #include "util/stream.hh"
@@ -178,6 +179,12 @@ void RunAction::EndOfRunAction(const G4Run*) {
   }
   lock.unlock();
   _prefix_loaded = false;
+ MuonDataController* controller = MuonDataController::getMuonDataController();
+ if (controller->getOn()){
+ G4cout<<"Five Body Muon Decays: "<<controller->getMuonDecays()<<G4endl;
+ G4cout<<"Events With Five Body Decay: "<<controller->getEventsWithDecay()<<G4endl;
+ 
+}
 }
 //----------------------------------------------------------------------------------------------
 

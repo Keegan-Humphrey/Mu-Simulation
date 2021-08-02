@@ -30,8 +30,12 @@ The simulation executable itself comes with several configuration parameters:
 | Data Output Directory | `-o <dir>`       | `--out=<dir>`       |
 | Number of Threads     | `-j <count>`     | `--threads=<count>` |
 | Visualization         | `-v`             | `--vis`             |
+| Turn On Five Body Muon Decays     | `-f` | `--five_muon`       |
+| Non-Random Five Body Decays       | `-n` | `--non_random`      |
 | Quiet Mode            | `-q`             | `--quiet`           |
 | Help                  | `-h`             | `--help`            |
+
+Note: The Five Body Muon Decays option will only save tracks with a five-body decay in a certain zone in the detector. Be sure this is what you want.
 
 Arguments can also be passed through the simulation to a script. Adding key value pairs which correspond to aliased arguments in a script, will be forwarded through. Here's an example:
 
