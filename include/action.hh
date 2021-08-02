@@ -24,8 +24,10 @@
 #include <G4UserEventAction.hh>
 #include <G4UserRunAction.hh>
 #include <G4UserSteppingAction.hh>
+#include <G4UserTrackingAction.hh>
 #include <G4VUserPrimaryGeneratorAction.hh>
 #include <G4Event.hh>
+#include <G4Track.hh>
 #include <G4Run.hh>
 #include "TROOT.h"
 #include "TTree.h"
@@ -84,6 +86,19 @@ private:
   Command::NoArg*     _current;
   Command::StringArg* _select;
 };
+//----------------------------------------------------------------------------------------------
+
+class TrackingAction : public G4UserTrackingAction{
+
+  public:
+    TrackingAction();
+   ~TrackingAction();
+
+    virtual void PreUserTrackingAction(const G4Track*);
+    virtual void PostUserTrackingAction(const G4Track*);
+
+};
+
 //----------------------------------------------------------------------------------------------
 
 class StepAction : public G4UserSteppingAction {

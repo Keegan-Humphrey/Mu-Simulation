@@ -35,6 +35,8 @@ The simulation executable itself comes with several configuration parameters:
 | Quiet Mode            | `-q`             | `--quiet`           |
 | Help                  | `-h`             | `--help`            |
 
+Note: The Five Body Muon Decays option will only save tracks with a five-body decay in a certain zone in the detector. Be sure this is what you want.
+
 Arguments can also be passed through the simulation to a script. Adding key value pairs which correspond to aliased arguments in a script, will be forwarded through. Here's an example:
 
 ```

@@ -29,16 +29,28 @@ public:
     virtual void setRandom(G4bool);
     virtual void setMuonDecays(G4int);
     virtual void setOn(G4bool);
-    virtual G4bool getOn();        
+    virtual G4bool getOn();
+    virtual G4bool getDecayInZone();
+    virtual void setDecayInZone(G4bool);
+    virtual G4int getEventsWithDecay();
+    virtual void incrementEventsWithDecay(G4int);        
 private:
-   EventAction* eventAction;
+   //static instance of the MuonDataController
    static MuonDataController* sController;
    G4int i =0;
+   //Is the order of the deays random
    G4bool Random;
+   //Are Five-Body Decays turned on
    G4bool decaysOn;
+   //The total number of Five-Body decays which have occured
    G4int MuonDecays =0;
    G4String e1x, e1y, e1z, e2x, e2y, e2z, e3x, e3y, e3z;
+   //Has there been a five-body decay in this event
    G4bool DecayInEvent;
+   //Has the five-body decay occured in the zone defined in tracking action
+   G4bool DecayInZone;
+   //How many total events had a five-body decay
+   G4int eventsWithDecay = 0;
 
 };
 }}

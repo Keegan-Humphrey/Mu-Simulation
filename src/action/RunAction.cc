@@ -182,6 +182,8 @@ void RunAction::EndOfRunAction(const G4Run*) {
  MuonDataController* controller = MuonDataController::getMuonDataController();
  if (controller->getOn()){
  G4cout<<"Five Body Muon Decays: "<<controller->getMuonDecays()<<G4endl;
+ G4cout<<"Events With Five Body Decay: "<<controller->getEventsWithDecay()<<G4endl;
+ 
 }
 }
 //----------------------------------------------------------------------------------------------

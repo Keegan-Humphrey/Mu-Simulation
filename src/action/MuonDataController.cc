@@ -42,7 +42,6 @@ if(sController){
 G4Exception("MuonDataController::MuonDataController","MuonDataControler01",FatalException, "MuonDataController::MuonDataController() has already been made.");
 }else{
 sController = this;
-eventAction =0;
 std::fstream eData;
         eData.open("src/action/muon5body_100k.csv",std::fstream::in);
         //ignore first line
@@ -182,6 +181,38 @@ G4bool MuonDataController::getOn(){
 return decaysOn;
 
 }
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+G4bool MuonDataController::getDecayInZone(){
+
+return DecayInZone;
+
+}
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void MuonDataController::setDecayInZone(G4bool value){
+
+DecayInZone = value;
+
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+G4int MuonDataController::getEventsWithDecay(){
+
+return eventsWithDecay;
+
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void MuonDataController::incrementEventsWithDecay(G4int events){
+
+eventsWithDecay+=events;
+
+}
+
 
 
 }}

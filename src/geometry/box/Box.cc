@@ -425,14 +425,18 @@ G4bool Detector::ProcessHits(G4Step* step, G4TouchableHistory*) {
 //__Post-Event Processing_______________________________________________________________________
 void Detector::EndOfEvent(G4HCofThisEvent*) {
   if (_hit_collection->GetSize() == 0)
-    return;
+    return;  
+ 
   MuonDataController* controller = MuonDataController::getMuonDataController();
   if(controller->getOn() ==true){
     if(controller->getDecayInEvent() == false){
       return;
       }
+    if(controller->getDecayInZone() == false){
+      return;
+      }
     }
-
+ 
   const auto collection_data = Tracking::ConvertToAnalysis(_hit_collection);
 
   Analysis::ROOT::DataEntryList root_data;
