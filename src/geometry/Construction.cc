@@ -221,7 +221,7 @@ void Builder::ConstructSDandField() {
     _data_key_types = &Box::Detector::DataKeyTypes;
     G4SDManager::GetSDMpointer()->AddNewDetector(new Box::Detector);
 
-    G4LogicalVolume* earth_volume = G4LogicalVolumeStore::GetInstance()->GetVolume("ModifiedSandstoneCosmic");
+    G4LogicalVolume* earth_volume = G4LogicalVolumeStore::GetInstance()->GetVolume("ModifiedSandstone");
     MultiParticleChangeCrossSection* biasingOperator = new MultiParticleChangeCrossSection;
     biasingOperator->AddParticle( "mu+" );
     biasingOperator->AddParticle( "mu-" );
