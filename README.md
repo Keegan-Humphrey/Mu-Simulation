@@ -30,7 +30,7 @@ The simulation executable itself comes with several configuration parameters:
 | Number of Threads     | `-j <count>`     | `--threads=<count>` |
 | Visualization         | `-v`             | `--vis`             |
 | Save All Generator Events         | `NA` | `--save_all`        |
-| Save Events With Pseudo-Digi Cuts (only for Cosmic geometry) | `NA` | `--save_cut`        |
+| Save Events With Pseudo-Digi Cuts (only for Cosmic geometry) | `NA` | `--cut_save`        |
 | Bias Muon Nuclear interaction in Earth (for Cosmic and Box geometry) | `NA` | `--bias`        |
 | Turn On Five Body Muon Decays     | `-f` | `--five_muon`       |
 | Non-Random Five Body Decays       | `-n` | `--non_random`      |
