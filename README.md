@@ -1,6 +1,5 @@
 # MATHUSLA Mu-Simulation
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/71dc15058b39409ea724775ec2b9816d)](https://app.codacy.com/app/MATHUSLA/Mu-Simulation?utm_source=github.com&utm_medium=referral&utm_content=MATHUSLA/Mu-Simulation&utm_campaign=badger)
 
 _simulation of muons through earth material_
 
@@ -30,6 +29,9 @@ The simulation executable itself comes with several configuration parameters:
 | Data Output Directory | `-o <dir>`       | `--out=<dir>`       |
 | Number of Threads     | `-j <count>`     | `--threads=<count>` |
 | Visualization         | `-v`             | `--vis`             |
+| Save All Generator Events         | `NA` | `--save_all`        |
+| Save Events With Pseudo-Digi Cuts (only for Cosmic geometry) | `NA` | `--cut_save`        |
+| Bias Muon Nuclear interaction in Earth (for Cosmic and Box geometry) | `NA` | `--bias`        |
 | Turn On Five Body Muon Decays     | `-f` | `--five_muon`       |
 | Non-Random Five Body Decays       | `-n` | `--non_random`      |
 | Quiet Mode            | `-q`             | `--quiet`           |
