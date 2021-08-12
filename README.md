@@ -71,7 +71,7 @@ All of the simulation configuration parameters can be passed through `./install 
 
 ### Generators
 
-There are three general purpose generators built in, `basic`, `range`, and `polar`. The `basic` generator produces a particle with constant `pT`, `eta`, and `phi` while the `range` generator produces particle within a specified range of values for each of the three variables. Any variable can also be fixed to a constant value. The `polar` generator uses the angles spherical coordinates, polar and azimuth, along with an energy  input to generate particles. The polar angle in `polar` generator can be either a constant or within a specified range, while the azimuth is only specified within a range.
+There are three general purpose generators built in, `basic`, `range`, and `polar`. The `basic` generator produces a particle with constant `pT`, `eta`, and `phi` while the `range` generator produces particle within a specified range of values for each of the three variables. Any variable can also be fixed to a constant value. The `polar` generator uses the angles from spherical coordinates, polar and azimuth, along with an energy input to generate particles. The polar angle in `polar` generator can be either a constant or within a specified range, while the azimuth is only given within a range.
 
 There is also a _Pythia8_ generator installed which behaves similiarly to the `range` generator.
 
