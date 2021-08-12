@@ -1,5 +1,4 @@
 
-
 #include "geometry/CosmicEarth.hh"
 
 #include <G4UnionSolid.hh>

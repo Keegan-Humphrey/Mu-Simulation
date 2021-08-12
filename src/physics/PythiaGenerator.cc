@@ -1,20 +1,3 @@
-/*
- * src/physics/PythiaGenerator.cc
- *
- * Copyright 2018 Brandon Gomes
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 #include <sstream>
 
@@ -35,7 +18,7 @@ namespace Physics { ////////////////////////////////////////////////////////////
 G4ThreadLocal Pythia8::Pythia* PythiaGenerator::_pythia = nullptr;
 G4ThreadLocal std::vector<std::string>* PythiaGenerator::_pythia_settings = nullptr;
 G4ThreadLocal bool PythiaGenerator::_settings_on = false;
-  
+
 G4ThreadLocal double PythiaPromptMuonFilter::_pCut=40.;
 G4ThreadLocal double PythiaPromptMuonFilter::_ptCut=-999.;
 G4ThreadLocal double PythiaPromptMuonFilter::_etaLoCut=0.6;
@@ -50,8 +33,8 @@ G4ThreadLocal double PythiaDisplacedFilter::_yHiCut=50000.;
 G4ThreadLocal double PythiaDisplacedFilter::_zLoCut=69500.;
 G4ThreadLocal double PythiaDisplacedFilter::_zHiCut=169500.;
 
-  
-  
+
+
 //----------------------------------------------------------------------------------------------
 
 //__Pythia Generator Construction_______________________________________________________________
@@ -169,7 +152,7 @@ void PythiaGenerator::GeneratePrimaryVertex(G4Event* g4event) {
   // "filtered" is what is sent to Geant4 for propagation
   std::vector<int> indexlist;
   _filter->GetParticles(_pythia->event, indexlist);
- 
+
   // add the G4index to the _last_event information (add 1 to match Geant4!)
   // then convert it to a particle for addition to the g4event
   for(unsigned long i = 0; i<indexlist.size(); ++i) {
@@ -180,7 +163,7 @@ void PythiaGenerator::GeneratePrimaryVertex(G4Event* g4event) {
 
 
 }
-  
+
 //----------------------------------------------------------------------------------------------
 
 //__Get Last Event Data_________________________________________________________________________
@@ -231,9 +214,9 @@ void PythiaGenerator::SetNewValue(G4UIcommand* command,
 	else if(tokens[0].find("yhicut")!=std::string::npos) { f2->_yHiCut=val; }
 	else if(tokens[0].find("zlocut")!=std::string::npos) { f2->_zLoCut=val; }
 	else if(tokens[0].find("zhicut")!=std::string::npos) { f2->_zHiCut=val; }
-      }      
+      }
     }
-    
+
   }
 }
 //----------------------------------------------------------------------------------------------
@@ -289,14 +272,14 @@ void PythiaGenerator::SetPythia(const std::string& path) {
     out.insert(out.cend(),
 	       std::make_move_iterator(config.begin()),
 	       std::make_move_iterator(config.end()));
-    
-    
+
+
     out.emplace_back(SimSettingPrefix, "_EVENTS", std::to_string(_counter));
-    
+
     return out;
   }
   //----------------------------------------------------------------------------------------------
-  
+
   void PythiaFilter::GetParticles(const Pythia8::Event& event, std::vector<int>& indexlist) {
 	  indexlist.clear();
 	  for (int i = 0; i < event.size(); ++i)
@@ -304,7 +287,7 @@ void PythiaGenerator::SetPythia(const std::string& path) {
 			  indexlist.push_back(i);
 	  return;
   }
-  
+
   void PythiaPromptMuonFilter::GetParticles(const Pythia8::Event& event, std::vector<int>& indexlist) {
     indexlist.clear();
     for (int i = 0; i < event.size(); ++i) {
@@ -346,7 +329,7 @@ void PythiaGenerator::SetPythia(const std::string& path) {
     out.emplace_back("FILTER_PHIHI", std::to_string(_phiHiCut));
     return out;
   }
-  
+
   void PythiaDisplacedFilter::GetParticles(const Pythia8::Event& event, std::vector<int>& indexlist) {
     indexlist.clear();
     for (int i = 0; i < event.size(); ++i)
@@ -368,7 +351,7 @@ void PythiaGenerator::SetPythia(const std::string& path) {
 
 
 
-  
+
   } /* namespace Physics */ //////////////////////////////////////////////////////////////////////
-  
+
 } } /* namespace MATHUSLA::MU */

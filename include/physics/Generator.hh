@@ -1,21 +1,3 @@
-/*
- * include/physics/Generator.hh
- *
- * Copyright 2018 Brandon Gomes
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 #ifndef MU__PHYSICS_GENERATOR_HH
 #define MU__PHYSICS_GENERATOR_HH
 #pragma once
@@ -119,6 +101,38 @@ protected:
   Command::DoubleUnitArg* _ui_phi_max;
   Command::DoubleUnitArg* _ui_ke_min;
   Command::DoubleUnitArg* _ui_ke_max;
+};
+//----------------------------------------------------------------------------------------------
+
+//__Default Polar Particle Generator____________________________________________________________
+class PolarGenerator : public Generator {
+public:
+
+  PolarGenerator(const std::string& name,
+                 const std::string& description,
+                 const Particle& particle);
+
+  virtual ~PolarGenerator() = default;
+
+  virtual void GeneratePrimaryVertex(G4Event* event);
+  virtual void SetNewValue(G4UIcommand* command,
+                           G4String value);
+  virtual std::ostream& Print(std::ostream& os=std::cout) const;
+  virtual const Analysis::SimSettingList GetSpecification() const;
+
+
+protected:
+
+  virtual void GenerateCommands();
+
+  double _azimuth_min, _azimuth_max, _polar_min, _polar_max, _polar, _e;
+
+  Command::DoubleUnitArg*      _ui_azimuth_min;
+  Command::DoubleUnitArg*      _ui_azimuth_max;
+  Command::DoubleUnitArg*      _ui_polar_min;
+  Command::DoubleUnitArg*      _ui_polar_max;
+  Command::DoubleUnitArg*      _ui_polar;
+  Command::DoubleUnitArg*      _ui_e;
 };
 //----------------------------------------------------------------------------------------------
 

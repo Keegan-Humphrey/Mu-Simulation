@@ -72,6 +72,7 @@ add_library(mu-simulation-lib SHARED
     src/physics/Particle.cc
     src/physics/PythiaGenerator.cc
     src/physics/RangeGenerator.cc
+    src/physics/PolarGenerator.cc
 
     src/util/command_line_parser.cc
 )
