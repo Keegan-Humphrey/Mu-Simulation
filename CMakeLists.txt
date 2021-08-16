@@ -26,6 +26,8 @@ find_package(Geant4  REQUIRED gdml ui_all vis_all)
 find_package(Pythia8 REQUIRED)
 find_package(ROOT    REQUIRED)
 
+set(PARMA4_LIBRARY /cms/sve6/MATHUSLA/Simulation/Parma4/libparma.a)
+
 include(${Geant4_USE_FILE})
 
 add_library(mu-simulation-lib SHARED
@@ -39,7 +41,11 @@ add_library(mu-simulation-lib SHARED
     src/action/GeneratorAction.cc
     src/action/RunAction.cc
     src/action/StepAction.cc
-
+	src/action/PhysicsList.cc
+	src/action/FiveBodyMuonDecayChannel.cc
+	src/action/MuonDataController.cc
+	src/action/TrackingAction.cc
+ 
     src/geometry/Cavern.cc
     src/geometry/Construction.cc
     src/geometry/Earth.cc
@@ -63,6 +69,7 @@ add_library(mu-simulation-lib SHARED
     src/physics/HepMCGenerator.cc
     src/physics/Particle.cc
     src/physics/PythiaGenerator.cc
+    src/physics/ParmaGenerator.cc
     src/physics/RangeGenerator.cc
 
     src/util/command_line_parser.cc
@@ -72,7 +79,8 @@ target_link_libraries(mu-simulation-lib PUBLIC
     ${Geant4_LIBRARIES}
     #${HEPMC_LIBRARIES}
     ${PYTHIA8_LIBRARY}
-    ${ROOT_LIBRARIES})
+    ${ROOT_LIBRARIES}
+    ${PARMA4_LIBRARY})
 
 target_include_directories(mu-simulation-lib PUBLIC
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>

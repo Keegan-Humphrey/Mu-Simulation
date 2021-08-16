@@ -47,7 +47,7 @@ static auto _sx1_slab_depth           =   200.0L*cm;
 // static auto _marl_depth               =  1825.0L*cm;
 // static auto _mix_depth                =  3645.0L*cm;
 
-static auto _sandstone_depth          =  3001.0L*cm;
+static auto _sandstone_depth          =  2600.0L*cm;
 static auto _marl_depth               =  0.0L*cm;
 static auto _mix_depth                =  0.0L*cm;
 //----------------------------------------------------------------------------------------------

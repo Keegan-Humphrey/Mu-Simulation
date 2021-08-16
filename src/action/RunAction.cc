@@ -35,6 +35,7 @@
 #include "analysis.hh"
 #include "geometry/Construction.hh"
 #include "physics/Units.hh"
+#include "MuonDataController.hh"
 
 #include "util/io.hh"
 #include "util/time.hh"
@@ -178,6 +179,9 @@ void RunAction::EndOfRunAction(const G4Run*) {
   }
   lock.unlock();
   _prefix_loaded = false;
+  if(MuonDataController::getMuonDataController()->getOn()){
+   G4cout<<"Total five-body muon decays: "<<MuonDataController::getMuonDataController()->getMuonDecays()<<G4endl;
+  }
 }
 //----------------------------------------------------------------------------------------------
 

@@ -14,6 +14,7 @@
 #include <G4SubtractionSolid.hh>
 #include "TROOT.h"
 #include "TTree.h"
+#include "MuonDataController.hh"
 
 
 using dimension = double;
@@ -429,6 +430,13 @@ void Detector::EndOfEvent(G4HCofThisEvent*) {
   if (_hit_collection->GetSize() == 0)
     return;
 
+MuonDataController* controller = MuonDataController::getMuonDataController();
+  if(controller->getOn() ==true){
+    if(controller->getDecayInEvent() == false){
+      return;
+      }
+    }
+
   const auto collection_data = Tracking::ConvertToAnalysis(_hit_collection, y_bounds, SaveCut);
 
   if (collection_data.size() == 0)
@@ -645,7 +653,7 @@ namespace CMS{
 
 	auto modified = new G4SubtractionSolid("",
 										   earth_box,
-										   Construction::Box("AirBox", x_edge_length + x_edge_increase, y_edge_length + 2.0L*cm, air_gap),
+										   Construction::Box("AirBox", x_edge_length + x_edge_increase, y_edge_length, air_gap),
 										   Construction::Transform(x_displacement,
 																   0.5L*y_edge_length + y_displacement,
 																   0.5L*(air_gap-Earth::TotalDepth()) -9.50*m ));
@@ -795,7 +803,7 @@ G4VPhysicalVolume* Detector::ConstructEarth(G4LogicalVolume* world){
 
 	auto modified = Construction::Volume(new G4SubtractionSolid("ModifiedSandstone",
 																sandstone->GetSolid(),
-																Construction::Box("AirBox3", x_edge_length + x_edge_increase, y_edge_length + 2.0L*cm, air_gap),
+																Construction::Box("AirBox3", x_edge_length + x_edge_increase, y_edge_length, air_gap),
 																Construction::Transform(x_displacement,
 																0.5L*y_edge_length + y_displacement,
 															    0.5L*(air_gap-Earth::SandstoneDepth()) - 9.50*m)),
