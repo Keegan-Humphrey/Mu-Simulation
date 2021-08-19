@@ -26,6 +26,7 @@
 #include "physics/FileReaderGenerator.hh"
 #include "physics/CORSIKAReaderGenerator.hh"
 #include "physics/PythiaGenerator.hh"
+#include "physics/ParmaGenerator.hh"
 #include "physics/HepMCGenerator.hh"
 #include "physics/Units.hh"
 

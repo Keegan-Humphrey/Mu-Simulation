@@ -4,7 +4,8 @@
 #include "physics/Generator.hh"
 
 #include "physics/Particle.hh"
-#include "physics/Parma.hh"
+#include "physics/Units.hh"
+#include "Parma.hh"
 #include "ui.hh"
 
 #include <string>
@@ -16,28 +17,34 @@ namespace MATHUSLA { namespace MU { namespace Physics {
 
 class ParmaGenerator : public Generator {
 public:
+  ParmaGenerator();
   ParmaGenerator(Parma4::Parma* parma);
   ParmaGenerator(std::vector<std::string>& settings);
 
   ~ParmaGenerator() = default;
 
+  void GenerateCommands();
+
   void GeneratePrimaryVertex(G4Event *event);
   virtual GenParticleVector GetLastEvent() const;
-  // void SetNewValue(G4UIcommand *command, G4String value);
+  void SetNewValue(G4UIcommand *command, G4String value);
+  void SetParma();
   void SetParma(Parma4::Parma* parma);
   void SetParma(std::vector<std::string>& settings);
 
   virtual const Analysis::SimSettingList GetSpecification() const;
 
 protected:
-  static G4ThreadLocal Parma4::Parma* _parma;
-  static G4ThreadLocal std::vector<std::string>* _parma_settings;
-  static G4ThreadLocal bool _settings_on;
+  Parma4::Parma* _parma;
+  //static G4ThreadLocal std::vector<std::string>* _parma_settings;
+  //static G4ThreadLocal bool _settings_on;
 
   GenParticleVector _last_event;
   std::uint_fast64_t _counter;
   
-  double _x0_min, _x0_max, _y0_min, _y0_max, _z0;
+  double _bounds[5] = {
+    -6000 * cm, 6000 * cm, -6000 * cm, 6000 * cm, -1469 * cm
+  }; //{x0 min, x0 max, y0 min, y0 max, z0}
 
   Command::DoubleUnitArg*     _ui_x0_min;
   Command::DoubleUnitArg*     _ui_x0_max;

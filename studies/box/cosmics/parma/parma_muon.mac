@@ -1,0 +1,5 @@
+/det/select Box
+
+/gen/select parma
+
+/run/beamOn 1000
