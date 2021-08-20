@@ -1,4 +1,5 @@
 *.a
+!Parma/libParma4.a
 *.app
 *.d
 *.dll
@@ -37,5 +38,6 @@ G4History*
 /export
 /detector_geo
 /git_ignore
+/Parma/CMakeFiles
 
 simulation

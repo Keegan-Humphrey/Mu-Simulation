@@ -29,8 +29,12 @@ find_package(Geant4  REQUIRED gdml ui_all vis_all)
 find_package(Pythia8 REQUIRED)
 find_package(ROOT    REQUIRED)
 
-set(PARMA4_LIBRARY /cms/sve6/MATHUSLA/Simulation/Parma4/CosmicSpectra/libParma4.a)
-set(PARMA4_INCLUDE_DIR /cms/sve6/MATHUSLA/Simulation/Parma4/CosmicSpectra/include)
+set(PARMA4_DIRECTORY ${CMAKE_SOURCE_DIR}/Parma)
+set(PARMA4_LIBRARY ${PARMA4_DIRECTORY}/libParma4.a)
+set(PARMA4_INCLUDE_DIR ${PARMA4_DIRECTORY}/include)
+
+message(STATUS "PARMA4_DIRECTORY=${PARMA4_DIRECTORY}")
+message(STATUS "PARMA4_LIBRARY=${PARMA4_LIBRARY}")
 
 include(${Geant4_USE_FILE})
 
@@ -79,8 +83,6 @@ add_library(mu-simulation-lib SHARED
     src/util/command_line_parser.cc
 )
 
-message(STATUS "CHECKPOINT 1****************************************")
-
 target_link_libraries(mu-simulation-lib PUBLIC
     ${Geant4_LIBRARIES}
     #${HEPMC_LIBRARIES}
@@ -88,13 +90,9 @@ target_link_libraries(mu-simulation-lib PUBLIC
     ${ROOT_LIBRARIES}
     ${PARMA4_LIBRARY})
 
-message(STATUS "CHECKPOINT 2****************************************")
-
 target_include_directories(mu-simulation-lib PUBLIC
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_SOURCE_DIR}/include>)
-
-message(STATUS "CHECKPOINT 3****************************************")
 
 target_include_directories(mu-simulation-lib SYSTEM PUBLIC
     ${Geant4_INCLUDE_DIRS}
