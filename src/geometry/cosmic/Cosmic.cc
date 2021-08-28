@@ -167,13 +167,13 @@ constexpr double module_beam_z_pos[7] = {-0.50*full_module_height + 0.50*module_
 
 
 
-const std::string folder = "detector_geo";
-const std::string file = "box.gdml";
-const std::string file2 ="mod.gdml";
-const std::string file3 ="layer.gdml";
-const std::string file4 ="earth.gdml";
-const std::string file5 ="modified.gdml";
-const std::string arg4 = "http://service-spi.web.cern.ch/service-spi/app/releases/GDML/Schema/gdml.xsd";
+// const std::string folder = "detector_geo";
+// const std::string file = "box.gdml";
+// const std::string file2 ="mod.gdml";
+// const std::string file3 ="layer.gdml";
+// const std::string file4 ="earth.gdml";
+// const std::string file5 ="modified.gdml";
+// const std::string arg4 = "http://service-spi.web.cern.ch/service-spi/app/releases/GDML/Schema/gdml.xsd";
 
 
 auto get_module_x_displacement(int tag_number){
@@ -534,10 +534,10 @@ G4VPhysicalVolume* Detector::ConstructModule(G4LogicalVolume* DetectorVolume, in
 	}
 
 
-	if (tag_number == 0) {
-		std::cout << "ABOUT TO WRITE GDML FOR MODULE" << std::endl;
-		Construction::Export(ModuleVolume, folder, file2, arg4 );
-	}
+	// if (tag_number == 0) {
+	// 	std::cout << "ABOUT TO WRITE GDML FOR MODULE" << std::endl;
+	// 	Construction::Export(ModuleVolume, folder, file2, arg4 );
+	// }
 
 
     return Construction::PlaceVolume(ModuleVolume, DetectorVolume,
@@ -608,7 +608,7 @@ G4VPhysicalVolume* Detector::Construct(G4LogicalVolume* world) {
 			 Construction::CasingAttributes());
 	Construction::PlaceVolume(_steel, DetectorVolume, Construction::Transform(0.0, 0.0, half_detector_height - 0.5*steel_height));
 
-    Construction::Export(DetectorVolume, folder, file, arg4 );
+	//    Construction::Export(DetectorVolume, folder, file, arg4 );
 
 	return Construction::PlaceVolume(DetectorVolume, world,
 		   Construction::Transform(x_displacement, 0.5L*y_edge_length + y_displacement, -0.50*full_detector_height + 20*m));
@@ -820,7 +820,7 @@ G4VPhysicalVolume* Detector::ConstructEarth(G4LogicalVolume* world){
 
 	////export geometry to gdml files
 	// Construction::Export(CMSVolume(), folder, file5, arg4 );
-	Construction::Export(earth, folder, file4, arg4 );
+	//	Construction::Export(earth, folder, file4, arg4 );
 
 
 	//// Put Range Cuts on earth volume

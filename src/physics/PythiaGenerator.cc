@@ -1,4 +1,3 @@
-
 #include <sstream>
 
 #include "physics/PythiaGenerator.hh"
@@ -9,6 +8,9 @@
 #include "geometry/Cavern.hh"
 #include "physics/Units.hh"
 #include "util/string.hh"
+
+#include <sys/time.h>
+#include <unistd.h>
 
 namespace MATHUSLA { namespace MU {
 
@@ -79,10 +81,13 @@ namespace { ////////////////////////////////////////////////////////////////////
 
 //__Setup Pythia Randomness_____________________________________________________________________
 Pythia8::Pythia* _setup_random(Pythia8::Pythia* pythia) {
-  int threadno=G4Threading::G4GetThreadId();
+  struct timeval curTime;
+  gettimeofday(&curTime, NULL);
+  long int micro_sec = curTime.tv_usec;
+
   pythia->readString("Random:setSeed = on");
   std::ostringstream oss;
-  oss << "Random:seed = " << threadno;
+  oss << "Random:seed = " << micro_sec;
   pythia->readString(oss.str());
   pythia->readString("Next:showScaleAndVertex = on");
   return pythia;
