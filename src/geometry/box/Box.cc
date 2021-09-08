@@ -617,7 +617,6 @@ G4VPhysicalVolume* Detector::Construct(G4LogicalVolume* world) {
 
 //----------------------------------------------------------------------------------------------
 
-
 namespace CMS{
 
   constexpr auto ____DEFINE_ME____   = 0.0*m;
