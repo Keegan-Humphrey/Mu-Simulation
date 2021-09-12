@@ -127,7 +127,7 @@ Particle _convert_particle(const Pythia8::Particle& particle) {
                particle.tProd() * mm / c_light,
                static_cast<double>(xz.first),
                particle.yProd() * mm,
-               static_cast<double>(xz.second + Earth::TotalShift() + 8547L*cm));
+               static_cast<double>(xz.second + Earth::TotalShift() + Box::Box_IP_Depth));
   out.set_pseudo_lorentz_triplet(particle.pT() * GeVperC, particle.eta(), particle.phi() * rad);
   out.genParticleRef=particle.index();
   return out;

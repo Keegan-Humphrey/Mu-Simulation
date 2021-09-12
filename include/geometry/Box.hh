@@ -29,6 +29,8 @@ namespace MATHUSLA { namespace MU {
 
 namespace Box { ////////////////////////////////////////////////////////////////////////////////
 
+constexpr auto Box_IP_Depth = 85.47*m;
+
 class Scintillator {
 public:
   Scintillator(const std::string& name,

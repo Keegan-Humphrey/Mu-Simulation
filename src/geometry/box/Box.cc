@@ -255,7 +255,7 @@ G4bool Detector::ProcessHits(G4Step* step, G4TouchableHistory*) {
   const auto momentum   = G4LorentzVector(step_point->GetTotalEnergy(), step_point->GetMomentum());
 
   //______Tranfomation to CMS Coordinates_____________________________________________________
-  const auto transformed_z = -(position.z() - 80.0L*m);
+  const auto transformed_z = -(position.z() - Box_IP_Depth);
   const auto position_transformed = G4ThreeVector(position.y(), transformed_z, position.x());
   const auto new_position = G4LorentzVector(step_point->GetGlobalTime(), position_transformed);
 
