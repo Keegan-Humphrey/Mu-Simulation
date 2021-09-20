@@ -32,6 +32,8 @@ class Parma {
         int getIP() { return ip; }
         int getSeed() { return seed; }
 
+        void setIP(int n) { ip = n; }
+
     private:
         bool    isInit;
 

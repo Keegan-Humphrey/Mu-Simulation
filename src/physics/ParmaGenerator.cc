@@ -27,6 +27,9 @@
 #include "physics/Units.hh"
 #include "util/string.hh"
 
+#include <sys/time.h>
+#include <unistd.h>
+
 namespace MATHUSLA { namespace MU {
 
 namespace Physics { ////////////////////////////////////////////////////////////////////////////
@@ -34,8 +37,8 @@ namespace Physics { ////////////////////////////////////////////////////////////
 //__Parma Generator Constructor_________________________________________________________________
 ParmaGenerator::ParmaGenerator()
   : Generator("parma", "Parma4 Cosmic Spectra Generator.") {
-  SetParma();
   GenerateCommands();
+  SetParma();
 }
 //__Parma Generator Constructor_________________________________________________________________
 // ParmaGenerator::ParmaGenerator(Parma4::Parma* parma) : ParmaGenerator() {
@@ -55,6 +58,10 @@ ParmaGenerator::ParmaGenerator()
 
 
 void ParmaGenerator::GenerateCommands() {
+  // _ui_id = CreateCommand<Command::IntegerArg>("id", "Set Particle Id.");
+  // _ui_id->SetParameterName("id", false);
+  // _ui_id->AvailableForStates(G4State_PreInit, G4State_Idle);
+
   _ui_x0_min = CreateCommand<Command::DoubleUnitArg>("x0_min", "Set minimum x0.");
   _ui_x0_min->SetParameterName("x0_min", false, false);
   _ui_x0_min->SetDefaultUnit("mm");
@@ -116,14 +123,9 @@ Parma4::Parma* _create_parma() {
   return parma;
 }
 //__Create Parma from Settings_________________________________________________________________
-Parma4::Parma* _create_parma(std::vector<std::string>* settings,
-                                bool& settings_on) {
+Parma4::Parma* _create_parma(int ip, int seed) {
   auto parma = new Parma4::Parma();
-  // for (const auto& setting : *settings)
-  //   parma->readString(setting);
-  // _setup_random(parma);
-  parma->init();
-  // settings_on = true;
+  parma->init(ip, seed);
   return parma;
 }
 //----------------------------------------------------------------------------------------------
@@ -188,7 +190,21 @@ GenParticleVector ParmaGenerator::GetLastEvent() const {
 
 void ParmaGenerator::SetNewValue(G4UIcommand* command,
                                  G4String value) {
-  if (command == _ui_x0_min) {
+  if (command == _ui_id) {
+    int uiid = _ui_id->GetNewIntValue(value);
+    if (uiid == 13) {
+      _parma->setIP(29);
+    }
+    if (uiid == -13) {
+      _parma->setIP(30);
+    }
+    else {
+      std::cout << "ParmaGenerator: The particle ID set was not a muon.\n";
+      std::cout << "ParmaGenerator: Using muon+ instead.\n";
+      _parma->setIP(29);
+    }
+  }
+  else if (command == _ui_x0_min) {
     _bounds[0] = _ui_x0_min->GetNewDoubleValue(value);
   } else if (command == _ui_x0_max) {
     _bounds[1] = _ui_x0_max->GetNewDoubleValue(value);
@@ -220,7 +236,12 @@ void ParmaGenerator::SetNewValue(G4UIcommand* command,
 // }
 
 void ParmaGenerator::SetParma() {
-  _parma = _create_parma();
+  int parma_ip = 29; // default value of parma_ip for muon+
+  struct timeval curTime;
+  gettimeofday(&curTime, NULL);
+  long int micro_sec = curTime.tv_usec;
+  std::cout << "ParmaGenerator: seed = " << micro_sec << "\n";
+  _parma = _create_parma(parma_ip, micro_sec);
 }
 
 //__ParmaGenerator Specifications_______________________________________________________________

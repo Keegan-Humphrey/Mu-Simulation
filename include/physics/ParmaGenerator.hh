@@ -45,6 +45,7 @@ protected:
   double _bounds[5] = {
     -6000 * cm, 6000 * cm, -6000 * cm, 6000 * cm, -1469 * cm
   }; //{x0 min, x0 max, y0 min, y0 max, z0}
+  int _particle_id;
 
   Command::DoubleUnitArg*     _ui_x0_min;
   Command::DoubleUnitArg*     _ui_x0_max;

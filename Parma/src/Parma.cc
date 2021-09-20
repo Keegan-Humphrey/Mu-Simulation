@@ -49,11 +49,11 @@ Parma::Parma() {
     isInit = false;
 }
 
-Parma::Parma(int particleIP, int genSeed) {
-    ip = particleIP;
-    seed = genSeed;
-    isInit = false;
-}
+// Parma::Parma(int particleIP, int genSeed) {
+//     ip = particleIP;
+//     seed = genSeed;
+//     isInit = false;
+// }
 
 Parma::~Parma() {};
 
@@ -66,7 +66,7 @@ bool Parma::init() { //Default initializer.
     }
     if(seed == 0) { //if seed has not been specified.
         cout << "Using default seed as specified in Parma.hh.\n";
-        cout << "To specify a seed,  use the Parma(particleIP, genSeed) constructor.\n";
+        cout << "To specify a seed,  use the Parma(particleIP, genSeed) initializer.\n";
         seed = defaultSeed;
     }
 
