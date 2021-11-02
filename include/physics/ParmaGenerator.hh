@@ -45,6 +45,8 @@ protected:
   double _bounds[5] = {
     -6000 * cm, 6000 * cm, -6000 * cm, 6000 * cm, -1469 * cm
   }; //{x0 min, x0 max, y0 min, y0 max, z0}
+  double _z_floor = 1459 * cm; // to calculate which particles to ignore
+  double _box_side_length = 5000 * cm;
   int _particle_id;
 
   Command::DoubleUnitArg*     _ui_x0_min;

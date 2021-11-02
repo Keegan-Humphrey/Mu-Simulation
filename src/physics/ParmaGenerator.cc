@@ -166,7 +166,7 @@ Particle _convert_particle(const double *particle, const double *bounds) {
   auto p_x = p_magnitude * sin_theta * std::cos(azimuthal_angle);
   auto p_y = p_magnitude * sin_theta * std::sin(azimuthal_angle);
   auto p_z = p_magnitude * std::cos(zenith_angle);
-
+  
   Particle out(pdgID, x0, y0, z0, p_x, p_y, p_z);
   return out;
 }
@@ -178,7 +178,21 @@ void ParmaGenerator::GeneratePrimaryVertex(G4Event* event) {
   ++_counter;
   const double *newParticle = _parma->getParticle();
   Particle p = _convert_particle(newParticle, _bounds);
-  AddParticle(p, *event);
+  G4ThreeVector p_direction = p.p_unit();
+  auto p_x = p_direction.getX();
+  auto p_y = p_direction.getY();
+  auto p_z = p_direction.getZ();
+  auto x0 = p.x;
+  auto y0 = p.y;
+  auto z0 = p.z;
+  auto s_floor = (_z_floor - z0) / p_z;
+  auto xint = x0 + s_floor * p_x;
+  auto yint = y0 + s_floor * p_y; // Calculating x and y intercepts with floor.
+  if(-_box_side_length <= xint && xint <= _box_side_length) { // Checking if floor int in box
+    if(-_box_side_length <= yint && yint <= _box_side_length) { // NOTE: assuming symm. abt 0!!
+      AddParticle(p, *event);
+    }
+  }
 }
 //----------------------------------------------------------------------------------------------
 
