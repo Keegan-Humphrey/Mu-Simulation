@@ -42,6 +42,11 @@ int main(int argc, char* argv[]) {
   using namespace MATHUSLA::MU;
 
   using util::cli::option;
+  
+  for(int i = 0; i < argc; i++) {
+    std::cout << argv[i] << " ";
+  }
+  std::cout << "\n";
 
   option help_opt    ('h', "help",     "MATHUSLA Muon Simulation",  option::no_arguments);
   option gen_opt     ('g', "gen",      "Generator",                 option::required_arguments);
@@ -147,7 +152,8 @@ if(fiveBodyMuonDecays){
 }
   const auto detector = det_opt.argument ? det_opt.argument : "Box";
   const auto export_dir = export_opt.argument ? export_opt.argument : "";
-  run->SetUserInitialization(new Construction::Builder(detector, export_dir, save_cut_opt.count));
+  run->SetUserInitialization(new Construction::Builder(detector, export_dir, save_all_opt.count)); // save_cut_opt not being set?
+  std::cout << "SVE3: SetUserInitialization save_all_opt.count value: " << save_all_opt.count << "\n";
 
 
   const auto generator = gen_opt.argument ? gen_opt.argument : "basic";

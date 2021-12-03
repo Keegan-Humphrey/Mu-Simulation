@@ -340,7 +340,7 @@ const Analysis::ROOT::DataEntryList ConvertToAnalysis(const G4Event* event) {
 }
 //----------------------------------------------------------------------------------------------
 
-//__Convert ParticleVector to Analysis Form_____________________________________________________
+//__Convert Pythia GenParticleVector to Analysis Form___________________________________________
 const Analysis::ROOT::DataEntryList ConvertToAnalysis(const Physics::GenParticleVector& particles, bool saveall) {
 
 
@@ -352,48 +352,114 @@ const Analysis::ROOT::DataEntryList ConvertToAnalysis(const Physics::GenParticle
     }
   }
 
-    constexpr const std::size_t column_count = 20UL;
+  constexpr const std::size_t column_count = 20UL;
 
-    Analysis::ROOT::DataEntryList out;
-    out.reserve(column_count);
+  Analysis::ROOT::DataEntryList out;
+  out.reserve(column_count);
 
-    const auto size = pvec.size();
+  const auto size = pvec.size();
 
-    for (std::size_t i{}; i < column_count; ++i) {
-      Analysis::ROOT::DataEntry entry;
-      entry.reserve(size);
-      out.push_back(entry);
-    }
+  for (std::size_t i{}; i < column_count; ++i) {
+    Analysis::ROOT::DataEntry entry;
+    entry.reserve(size);
+    out.push_back(entry);
+  }
 
-    for (std::size_t index{}; index < size; ++index) {
-      const auto& particle = pvec[index];
-      out[0].push_back(particle.index);
-      out[1].push_back(particle.G4index);
-      out[2].push_back(particle.pdgid);
-      out[3].push_back(particle.status);
-      out[4].push_back(particle.vertex.e());
-      out[5].push_back(particle.vertex.px());
-      out[6].push_back(particle.vertex.py());
-      out[7].push_back(particle.vertex.pz());
-      out[8].push_back(particle.mom.e());
-      out[9].push_back(particle.mom.px());
-      out[10].push_back(particle.mom.py());
-      out[11].push_back(particle.mom.pz());
-      out[12].push_back(particle.moid1);
-      out[13].push_back(particle.moid2);
-      out[14].push_back(particle.dau1);
-      out[15].push_back(particle.dau2);
-      out[16].push_back(particle.m);
-      out[17].push_back(particle.mom.pT());
-      out[18].push_back(particle.mom.eta());
-      out[19].push_back(particle.mom.phi());
+  for (std::size_t index{}; index < size; ++index) {
+    const auto& particle = pvec[index];
+    out[0].push_back(particle.index);
+    out[1].push_back(particle.G4index);
+    out[2].push_back(particle.pdgid);
+    out[3].push_back(particle.status);
+    out[4].push_back(particle.vertex.e());
+    out[5].push_back(particle.vertex.px());
+    out[6].push_back(particle.vertex.py());
+    out[7].push_back(particle.vertex.pz());
+    out[8].push_back(particle.mom.e());
+    out[9].push_back(particle.mom.px());
+    out[10].push_back(particle.mom.py());
+    out[11].push_back(particle.mom.pz());
+    out[12].push_back(particle.moid1);
+    out[13].push_back(particle.moid2);
+    out[14].push_back(particle.dau1);
+    out[15].push_back(particle.dau2);
+    out[16].push_back(particle.m);
+    out[17].push_back(particle.mom.pT());
+    out[18].push_back(particle.mom.eta());
+    out[19].push_back(particle.mom.phi());
 
   }
 
-    return out;
+  return out;
 }
 //----------------------------------------------------------------------------------------------
 
+//Convert ParticleVector (Geant-coords.) into ROOT data in CMS coords.
+// const Analysis::ROOT::DataEntryList ConvertToAnalysis(const Physics::ParticleVector& particles, bool saveall) {
+//   // expected input in Geant coordinates, mm. want output in CMS coordinates, m.
+//   // if we don't want to save everything, then select only those genparticles that were sent to Geant4
+//   Physics::GenParticleVector pvec;
+//   for (std::size_t index=0; index < particles.size(); ++index) {
+//     if(saveall || particles[index].G4index>=0) {
+//       const auto particle = particles[index];
+//       //converting coordinate systems. Geant (x,y,z) -> CMS (y, 80 - z, x) [m]
+//       const auto xProd = particle.y;
+//       const auto yProd = 80 - particle.z; //CHECK THIS! WHAT UNITS ARE WE USING?
+//       const auto zProd = particle.x;
+
+//       const auto px = particle.py;
+//       const auto py = -particle.pz;
+//       const auto pz = particle.px;
+//       pvec.push_back(Physics::GenParticle(Physics::Particle(particle.id, particle.t, xProd, yProd, zProd,
+//                                           px, py, pz, particle.genParticleRef))); 
+//       //conversion to GenParticle so all branches can get filled
+//     }
+//   }
+
+//   constexpr const std::size_t column_count = 20UL;
+
+//   Analysis::ROOT::DataEntryList out;
+//   out.reserve(column_count);
+//   const auto size = pvec.size();
+
+//   for (std::size_t i{}; i < column_count; ++i) {
+//     Analysis::ROOT::DataEntry entry;
+//     entry.reserve(size);
+//     out.push_back(entry);
+//   }
+
+  
+
+
+//   for (std::size_t index{}; index < size; ++index) {
+//     const auto& particle = pvec[index];
+//     out[0].push_back(particle.index);
+//     out[1].push_back(particle.G4index);
+//     out[2].push_back(particle.pdgid);
+//     out[3].push_back(particle.status);
+//     out[4].push_back(particle.vertex.e());
+//     out[5].push_back(particle.vertex.px());
+//     out[6].push_back(particle.vertex.py());
+//     out[7].push_back(particle.vertex.pz());
+//     out[8].push_back(particle.mom.e());
+//     out[9].push_back(particle.mom.px());
+//     out[10].push_back(particle.mom.py());
+//     out[11].push_back(particle.mom.pz());
+//     out[12].push_back(particle.moid1);
+//     out[13].push_back(particle.moid2);
+//     out[14].push_back(particle.dau1);
+//     out[15].push_back(particle.dau2);
+//     out[16].push_back(particle.m);
+//     out[17].push_back(particle.mom.pT());
+//     out[18].push_back(particle.mom.eta());
+//     out[19].push_back(particle.mom.phi());
+
+//   }
+
+//   return out;
+// }
+
+//--------------------------------------------------------------------------------------------------------
 //__Convert HitCollection to Analysis Form With Cuts______________________________________________________
 const Analysis::ROOT::DataEntryList ConvertToAnalysis(const HitCollection* collection, std::vector<std::vector<double>> layer_bounds, bool savecut) {
   if (savecut) {

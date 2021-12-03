@@ -159,6 +159,7 @@ G4VPhysicalVolume* Builder::Construct() {
   }
 
   Builder::SetSaveOption(_save_option);
+  std::cout << "SVE2: SetSaveOption to " << _save_option << "\n";
 
   auto world = PlaceVolume(worldLV, nullptr);
   if (!_export_dir.empty()) {
@@ -253,7 +254,7 @@ void Builder::SetSaveOption(bool option) {
   if (_detector == "Flat") {
     Flat::Detector::SaveAll = option;
   } else if (_detector == "Box") {
-	  //    Box::Detector::SaveAll = option;
+    Box::Detector::SaveAll = option;
 	Box::Detector::SaveCut = option;
   } else if (_detector == "MuonMapper") {
     MuonMapper::Detector::SaveAll = option;

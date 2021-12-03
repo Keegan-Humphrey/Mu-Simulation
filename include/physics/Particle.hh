@@ -172,6 +172,10 @@ struct Particle : BasicParticle {
   Particle(const BasicParticle& basic_particle)
     : Particle(basic_particle.id, 0, 0, 0, 0, basic_particle.px, basic_particle.py, basic_particle.pz, -1) {}
 
+  Particle(const Particle& particle1) 
+    : Particle( particle1.id, particle1.t, particle1.x, particle1.y, particle1.z, 
+                particle1.px, particle1.py, particle1.pz, particle1.genParticleRef) {}
+
   void set_vertex(double new_x,
                   double new_y,
                   double new_z);

@@ -175,30 +175,40 @@ Particle _convert_particle(const double *particle, const double *bounds) {
 } /* anonymous namespace */ ////////////////////////////////////////////////////////////////////
 //__Generate Initial Particles__________________________________________________________________
 void ParmaGenerator::GeneratePrimaryVertex(G4Event* event) {
-  ++_counter;
-  const double *newParticle = _parma->getParticle();
-  Particle p = _convert_particle(newParticle, _bounds);
-  G4ThreeVector p_direction = p.p_unit();
-  auto p_x = p_direction.getX();
-  auto p_y = p_direction.getY();
-  auto p_z = p_direction.getZ();
-  auto x0 = p.x;
-  auto y0 = p.y;
-  auto z0 = p.z;
-  auto s_floor = (_z_floor - z0) / p_z;
-  auto xint = x0 + s_floor * p_x;
-  auto yint = y0 + s_floor * p_y; // Calculating x and y intercepts with floor.
-  if(-_box_side_length <= xint && xint <= _box_side_length) { // Checking if floor int in box
-    if(-_box_side_length <= yint && yint <= _box_side_length) { // NOTE: assuming symm. abt 0!!
-      AddParticle(p, *event);
+  ++_counter; //loop over until find interesting particle
+  std::cout << "\nSVE1 Making Parma Vertex\n";
+  Particle p;
+  while (true) {
+    const double *newParticle = _parma->getParticle();
+    p = _convert_particle(newParticle, _bounds);
+
+    G4ThreeVector p_direction = p.p_unit();
+    auto p_x = p_direction.getX();
+    auto p_y = p_direction.getY();
+    auto p_z = p_direction.getZ();
+    auto x0 = p.x;
+    auto y0 = p.y;
+    auto z0 = p.z;
+    auto s_floor = (_z_floor - z0) / p_z;
+    auto xint = x0 + s_floor * p_x;
+    auto yint = y0 + s_floor * p_y; // Calculating x and y intercepts with floor.
+    if(-_box_side_length <= xint && xint <= _box_side_length) { // Checking if floor int in box
+      if(-_box_side_length <= yint && yint <= _box_side_length) { // NOTE: assuming symm. abt 0!!
+        break;
+      }
     }
   }
+  //_last_event gets stored in the ntuple
+  _last_event.clear();
+  _last_event.push_back(GenParticle(p));
+  std::cout << "last event size: " << _last_event.size() << "\n";
+  AddParticle(p, *event);
 }
 //----------------------------------------------------------------------------------------------
 
 //__Get Last Event Data_________________________________________________________________________
 GenParticleVector ParmaGenerator::GetLastEvent() const {
-  return GenParticleVector{}; //empty. TODO: get actual last event data returned to fill into branches
+  return _last_event; //empty. TODO: get actual last event data returned to fill into branches
 }
 //----------------------------------------------------------------------------------------------
 

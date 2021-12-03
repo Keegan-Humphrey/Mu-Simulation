@@ -430,7 +430,7 @@ void Detector::EndOfEvent(G4HCofThisEvent*) {
   if (_hit_collection->GetSize() == 0)
     return;
 
-MuonDataController* controller = MuonDataController::getMuonDataController();
+  MuonDataController* controller = MuonDataController::getMuonDataController();
   if(controller->getOn() ==true){
     if(controller->getDecayInEvent() == false){
       return;
@@ -460,6 +460,8 @@ MuonDataController* controller = MuonDataController::getMuonDataController();
   root_data.push_back(collection_data[13]);
 
   const auto gen_particle_data = Tracking::ConvertToAnalysis(GeneratorAction::GetLastEvent(), SaveAll);
+  std::cout << "\nSVE\n";
+  std::cout << "size: " << gen_particle_data.size() << "  SaveAll: " << SaveAll << "\n";
   const auto extra_gen_data = Tracking::ConvertToAnalysis(GeneratorAction::GetGenerator()->ExtraDetails());
   root_data.insert(root_data.cend(), gen_particle_data.cbegin(), gen_particle_data.cend());
   root_data.insert(root_data.cend(), extra_gen_data.cbegin(), extra_gen_data.cend());
