@@ -125,9 +125,11 @@ Particle _convert_particle(const Pythia8::Particle& particle) {
   const auto xz = Cavern::rotate_from_P1(particle.zProd() * mm, -particle.xProd() * mm);
   Particle out(particle.id(),
                particle.tProd() * mm / c_light,
-               static_cast<double>(xz.first),
+//               static_cast<double>(xz.first),
+               static_cast<double>(particle.zProd() * mm),
                particle.yProd() * mm,
-               static_cast<double>(xz.second + Earth::TotalShift() + Box::Box_IP_Depth));
+//               static_cast<double>(xz.second + Earth::TotalShift() + Box::Box_IP_Depth));
+               static_cast<double>(-particle.xProd() * mm + Earth::TotalShift() + Box::Box_IP_Depth));
   out.set_pseudo_lorentz_triplet(particle.pT() * GeVperC, particle.eta(), particle.phi() * rad);
   out.genParticleRef=particle.index();
   return out;

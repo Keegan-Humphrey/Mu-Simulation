@@ -17,10 +17,12 @@ const PseudoLorentzTriplet Convert(const G4ThreeVector& momentum) {
   if (magnitude == 0)
     return {};
   const auto pxpz = Cavern::rotate_from_P1(momentum.x(), momentum.z());
-  const auto eta = std::atanh(pxpz.first / magnitude);
+//  const auto eta = std::atanh(pxpz.first / magnitude);
+  const auto eta = std::atanh(momentum.x() / magnitude);
   return {static_cast<double>(magnitude / std::cosh(eta)),
           static_cast<double>(eta),
-          static_cast<double>(std::atan2(momentum.y(), -pxpz.second))};
+//          static_cast<double>(std::atan2(momentum.y(), -pxpz.second))};
+          static_cast<double>(std::atan2(momentum.y(), -momentum.z()))};
 }
 //----------------------------------------------------------------------------------------------
 
@@ -28,9 +30,11 @@ const PseudoLorentzTriplet Convert(const G4ThreeVector& momentum) {
 const G4ThreeVector Convert(const PseudoLorentzTriplet& triplet) {
   const auto pxpz = Cavern::rotate_to_P1(triplet.pT * std::sinh(triplet.eta),
                                         -triplet.pT * std::cos(triplet.phi));
-  return G4ThreeVector(static_cast<double>(pxpz.first),
+//  return G4ThreeVector(static_cast<double>(pxpz.first),
+  return G4ThreeVector(static_cast<double>(triplet.pT * std::sinh(triplet.eta)),
                        triplet.pT * std::sin(triplet.phi),
-                       static_cast<double>(pxpz.second));
+//                       static_cast<double>(pxpz.second));
+                       static_cast<double>(-triplet.pT * std::cos(triplet.phi)));
 }
 //----------------------------------------------------------------------------------------------
 
@@ -76,7 +80,7 @@ double BasicParticle::pT() const {
   const auto magnitude = p_mag();
   if (magnitude == 0)
     return 0;
-  const auto eta = std::atanh(Cavern::rotate_from_P1_x(px, pz) / magnitude);
+  const auto eta = std::atanh(px / magnitude);
   return static_cast<double>(magnitude / std::cosh(eta));
 }
 //----------------------------------------------------------------------------------------------
@@ -86,13 +90,13 @@ double BasicParticle::eta() const {
   const auto magnitude = p_mag();
   if (magnitude == 0)
     return 0;
-  return static_cast<double>(std::atanh(Cavern::rotate_from_P1_x(px, pz) / magnitude));
+  return static_cast<double>(std::atanh(px / magnitude));
 }
 //----------------------------------------------------------------------------------------------
 
 //__Get Basic Particle PHI______________________________________________________________________
 double BasicParticle::phi() const {
-  return static_cast<double>(std::atan2(py, -Cavern::rotate_from_P1_z(px, pz)));
+  return static_cast<double>(std::atan2(py, -pz));
 }
 //----------------------------------------------------------------------------------------------
 
